@@ -12,39 +12,44 @@ class KanbanBoard extends React.Component {
 
 		this.state = {
 			projects: Object.assign({}, props.projects),
-			columns: Object.assign({}, props.columns)
+			columns: Object.assign({}, props.columns),
+			mouseEvent: false
 		}
 	}
 
 	handleOnDragEnter(e, stageValue) {
-		this.setState({ draggedOverCol: stageValue });
+		this.setState({
+			draggedOverCol: stageValue,
+			mouseEvent: true
+		});
 	}
 
 	handleOnDragEnd(e, project) {
 		let projectToBeUpdated = this.props.projects.slice(0).find((projectObject) => { return projectObject.name === project.name });
+		this.setState({ mouseEvent: false });
 		this.props.actions.updateProject(projectToBeUpdated, this.state.draggedOverCol);
 	}
-
+	
 	render() {
-
+		console.log(this.state.mouseEvent);
 		return (
 			<div>
 
 				{this.props.columns.map((column) => {
 					return (
-						
 						<KanbanColumn
+							mouseEvent={this.state.mouseEvent}
 							name={column.name}
 							stage={column.stage}
+							id={column.id}
 							projects={this.props.projects.filter((project) => { return parseInt(project.project_stage, 10) === column.stage; })}
 							onDragEnter={this.handleOnDragEnter}
 							onDragEnd={this.handleOnDragEnd}
 							key={column.stage}
 						/>
-						
 					);
 				})}
-				
+
 			</div>
 		);
 	}

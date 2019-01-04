@@ -29,3 +29,17 @@ export function addColumn(column) {
         }); 
     }; 
 }
+
+function deleteColumnSuccess(column) {
+    return { type: types.DELETE_COLUMN_SUCCESS, column};
+}
+
+export function deleteColumn(column) {
+    return function(dispatch) {
+        return projectApi.deleteColumn(column).then(column => {
+            dispatch(deleteColumnSuccess(column));
+        }).catch(error => {
+            throw(error);
+        }); 
+    }; 
+}

@@ -30,12 +30,12 @@ export function updateProject(project, newColumn) {
 }
 
 function deleteProjectSuccess(project) {
-    return {type: types.DELETE_PROJECT_SUCCESS, project};
+    return { type: types.DELETE_PROJECT_SUCCESS, project };
 }
 
 export function deleteProject(project) {
     return function (dispatch) {
-        return projectApi.deleteProject(project).then(project => {
+        return projectApi.deleteProject(project.id).then(project => {
             dispatch(deleteProjectSuccess(project));
         }).catch((error) => {
             throw (error);
@@ -43,4 +43,18 @@ export function deleteProject(project) {
     }
 }
 
+function addKanbanCardSuccess(project) {
+    return { type: types.ADD_KANBANCARD_SUCCESS, project };
+}
+
+
+export function addKanbanCard(project) {
+    return function (dispatch) {
+        return projectApi.addKanbanCard(project).then(project => {
+            dispatch(addKanbanCardSuccess(project));
+        }).catch((error) => {
+            throw (error);
+        });
+    };
+}
 
