@@ -36,6 +36,7 @@ class KanbanColumn extends React.Component {
 					project={project}
 					key={project.name}
 					onDragEnd={this.props.onDragEnd}
+					mouseEvent={this.props.mouseEvent}
 				/>
 			);
 		});
@@ -55,13 +56,18 @@ class KanbanColumn extends React.Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		let canBanCard = { name: this.state.cardName, description: this.state.description, project_stage: this.props.stage, assignedTo: parseInt(this.state.assignedMember, 0) }
+		let canBanCard = {
+			name: this.state.cardName,
+			description: this.state.description,
+			project_stage: this.props.stage,
+			assignedTo: parseInt(this.state.assignedMember, 0)
+		};
 		this.setState({
 			cardName: '',
 			description: ''
 		})
 		this.props.projectActions.addKanbanCard(canBanCard)
-		.then(() => { toastr.success('Task added successfully') });
+			.then(() => { toastr.success('Task added successfully') });
 	}
 
 	render() {
@@ -73,7 +79,7 @@ class KanbanColumn extends React.Component {
 			'width': '170px',
 			'padding': '5px',
 			'textAlign': 'left',
-			'border': (this.props.mouseEvent) ?  'solid black 1px' : '',
+			'border': (this.props.mouseEvent) ? 'solid black 1px' : '',
 			'backgroundColor': (this.state.mouseIsHovering) ? '#d3d3d3' : '#d3d3d3',
 		};
 
@@ -90,12 +96,12 @@ class KanbanColumn extends React.Component {
 				<h4>{this.props.stage}. {this.props.name} ({this.props.projects.length}) <Glyphicon style={glyphStyle} key={this.props.id} onClick={(e) => this.deleteColumn(this.props.id)} glyph="remove" /></h4>
 
 				{this.generateKanbanCards()}
-				<Button 
-				style={{marginBottom: '5px', width: '100%'}}
-				bsStyle="primary"
-				onClick={() => {this.setState({displayForm: !this.state.displayForm})}}
+				<Button
+					style={{ marginBottom: '5px', width: '100%' }}
+					bsStyle="primary"
+					onClick={() => { this.setState({ displayForm: !this.state.displayForm }) }}
 				> {this.state.displayForm ? 'Close' : 'Add new task'}</Button>
-				
+
 				{this.state.displayForm && <KanBanForm
 					handleChange={this.handleChange}
 					handleSubmit={this.handleSubmit}

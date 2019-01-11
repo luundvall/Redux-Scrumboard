@@ -18,6 +18,7 @@ class KanbanBoard extends React.Component {
 	}
 
 	handleOnDragEnter(e, stageValue) {
+		console.log("DRAGGING!!");
 		this.setState({
 			draggedOverCol: stageValue,
 			mouseEvent: true
@@ -29,27 +30,28 @@ class KanbanBoard extends React.Component {
 		this.setState({ mouseEvent: false });
 		this.props.actions.updateProject(projectToBeUpdated, this.state.draggedOverCol);
 	}
-	
-	render() {
-		console.log(this.state.mouseEvent);
-		return (
-			<div>
 
-				{this.props.columns.map((column) => {
+	render() {
+		return (
+			<div style={{ display: 'flex', flexWrap: 'wrap' }}>
+				{this.props.columns.sort((a,b) => {return a.stage - b.stage}).map((column, index) => {
 					return (
-						<KanbanColumn
-							mouseEvent={this.state.mouseEvent}
-							name={column.name}
-							stage={column.stage}
-							id={column.id}
-							projects={this.props.projects.filter((project) => { return parseInt(project.project_stage, 10) === column.stage; })}
-							onDragEnter={this.handleOnDragEnter}
-							onDragEnd={this.handleOnDragEnd}
-							key={column.stage}
-						/>
+						<div key={index}
+							draggable={true}
+						>
+							<KanbanColumn
+								mouseEvent={this.state.mouseEvent}
+								name={column.name}
+								stage={column.stage}
+								id={column.id}
+								projects={this.props.projects.filter((project) => { return parseInt(project.project_stage, 10) === column.stage; })}
+								onDragEnter={this.handleOnDragEnter}
+								onDragEnd={this.handleOnDragEnd}
+								key={column.stage}
+							/>
+						</div>
 					);
 				})}
-
 			</div>
 		);
 	}

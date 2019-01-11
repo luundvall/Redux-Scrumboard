@@ -16,6 +16,11 @@ export default function projectReducer(state = initialState.projects, action) {
             return [...state, 
                 Object.assign({}, action.project)
             ];
+        case types.UPDATE_KANBANCARD_SUCCESS: 
+            return [
+                ...state.filter((project) => project.id !== action.project.id),
+                Object.assign({}, action.project)
+            ];
         default:
             return state;
     }

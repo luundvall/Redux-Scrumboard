@@ -35,7 +35,7 @@ function deleteProjectSuccess(project) {
 
 export function deleteProject(project) {
     return function (dispatch) {
-        return projectApi.deleteProject(project.id).then(project => {
+        return projectApi.deleteProject(project).then(project => {
             dispatch(deleteProjectSuccess(project));
         }).catch((error) => {
             throw (error);
@@ -52,6 +52,20 @@ export function addKanbanCard(project) {
     return function (dispatch) {
         return projectApi.addKanbanCard(project).then(project => {
             dispatch(addKanbanCardSuccess(project));
+        }).catch((error) => {
+            throw (error);
+        });
+    };
+}
+
+function updateKanbanCardSuccess(project) {
+    return { type: types.UPDATE_KANBANCARD_SUCCESS, project };
+}
+
+export function updateKanbanCard(project) {
+    return function (dispatch) {
+        return projectApi.updateKanbanCard(project).then((project) => {
+            dispatch(updateKanbanCardSuccess(project));
         }).catch((error) => {
             throw (error);
         });

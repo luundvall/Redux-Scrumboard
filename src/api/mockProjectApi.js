@@ -104,10 +104,13 @@ class ProjectApi {
         });
     }
 
-    static deleteProject(projectId) {
+    static deleteProject(project) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(projectId);
+                const existingProjects = projects.findIndex(project => project === project.id);
+                projects.splice(existingProjects, 1);
+                console.log(projects);
+                resolve(project.id);
             }, 1000);
         });
     }
@@ -132,6 +135,8 @@ class ProjectApi {
     static deleteColumn(columnId) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
+                const existingColumns = columns.findIndex(col => col.id === columnId);
+                columns.splice(existingColumns, 1);
                 resolve(columnId)
             }, 1000);
         });
@@ -143,6 +148,17 @@ class ProjectApi {
             setTimeout(() => {
                 project.id = generateId(project)
                 projects.push(project);
+                resolve(project)
+            }, 1000);
+        });
+    }
+
+    static updateKanbanCard(project) {
+        project = Object.assign({}, project);
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const existingProject = projects.findIndex(a => a.id === project.id);
+                projects.splice(existingProject, 1, project);
                 resolve(project)
             }, 1000);
         });
